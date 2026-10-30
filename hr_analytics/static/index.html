@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>People Analytics · Snappfood</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="dot"></span><span data-i18n="title">داشبورد تحلیل منابع انسانی</span><small>People Analytics · 2025</small></div>
+  <nav id="tabs">
+    <button data-tab="overview" class="active" data-i18n="tab_overview">نمای کلی</button>
+    <button data-tab="attrition" data-i18n="tab_attrition">ریزش (Attrition)</button>
+    <button data-tab="signals" data-i18n="tab_signals">سیگنال‌های ریسک</button>
+    <button data-tab="engagement" data-i18n="tab_engagement">Engagement Survey</button>
+    <button data-tab="recruitment" data-i18n="tab_recruitment">جذب و تازه‌واردها</button>
+    <button data-tab="careers" data-i18n="tab_careers">رشد شغلی</button>
+    <button data-tab="dq" data-i18n="tab_dq">کیفیت داده</button>
+  </nav>
+  <button id="lang" class="lang" title="Language / زبان">EN</button>
+</header>
+
+<section class="filters" id="filters">
+  <div class="f"><label data-i18n="f_dept">بخش</label><div id="f-department" class="chips"></div></div>
+  <div class="f"><label data-i18n="f_manager">مدیر</label><select id="f-manager_id" multiple size="3"></select></div>
+  <div class="f"><label data-i18n="f_type">نوع استخدام</label><select id="f-employment_type"></select></div>
+  <div class="f"><label data-i18n="f_loc">محل کار</label><select id="f-work_location"></select></div>
+  <div class="f"><label data-i18n="f_grade">گرید حقوقی</label><select id="f-salary_grade"></select></div>
+  <div class="f"><label data-i18n="f_from">از ماه</label><select id="f-month_from"></select></div>
+  <div class="f"><label data-i18n="f_to">تا ماه</label><select id="f-month_to"></select></div>
+  <button id="reset" class="reset" data-i18n="reset">بازنشانی</button>
+</section>
+
+<main>
+  <div id="banner" class="banner" hidden></div>
+  <section class="tab active" id="tab-overview">
+    <div id="kpis" class="kpis"></div>
+    <div class="grid2">
+      <div class="card"><h3 data-i18n="c_flow">ورودی و خروجی ماهانه و Headcount</h3><div class="cv"><canvas id="ch-flow"></canvas></div></div>
+      <div class="card"><h3 data-i18n="c_hazard">نرخ ریزش ماهانه در برابر Engagement</h3><div class="cv"><canvas id="ch-hazard"></canvas></div><p class="note" data-i18n="n_hazard"></p></div>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-attrition">
+    <div class="bar"><label data-i18n="by">تفکیک بر اساس</label><select id="by"></select></div>
+    <div class="grid2">
+      <div class="card"><h3 data-i18n="c_turnover">نرخ ریزش سالانه‌شده و نرخ ماهانه نیمه اول/دوم</h3><div class="cv"><canvas id="ch-bd"></canvas></div><p class="note" data-i18n="n_bd"></p></div>
+      <div class="card"><h3 data-i18n="c_reasons">دلایل خروج</h3><div class="cv"><canvas id="ch-reasons"></canvas></div></div>
+    </div>
+    <div class="card"><h3 data-i18n="c_table">جزئیات</h3><div id="bd-table" class="scroll"></div></div>
+  </section>
+
+  <section class="tab" id="tab-signals">
+    <div class="bar"><label data-i18n="driver">متغیر</label><select id="driver"></select></div>
+    <div class="grid2">
+      <div class="card"><h3 data-i18n="c_traj">مسیر قبل از خروج: Engagement</h3><div class="cv"><canvas id="ch-traj"></canvas></div><p class="note" data-i18n="n_traj"></p></div>
+      <div class="card"><h3 data-i18n="c_quart">نرخ خروج ماهانه به تفکیک چارک (ماه قبل)</h3><div class="cv"><canvas id="ch-quart"></canvas></div></div>
+    </div>
+    <div class="card"><h3 data-i18n="c_model">مدل لجستیک: نسبت بخت (Odds Ratio)</h3><div id="model" class="scroll"></div><p class="note" data-i18n="n_model"></p></div>
+  </section>
+
+  <section class="tab" id="tab-engagement">
+    <div class="grid2">
+      <div class="card"><h3 data-i18n="c_gap">امتیاز ابعاد Survey: ترک‌کنندگان در برابر ماندگاران (۱ تا ۵)</h3><div class="cv"><canvas id="ch-gap"></canvas></div></div>
+      <div class="card"><h3 data-i18n="c_dimq">روند فصلی ابعاد</h3><div class="cv"><canvas id="ch-dimq"></canvas></div></div>
+    </div>
+    <div class="card"><h3 data-i18n="c_cov">پوشش پاسخ و Recommend (٪ مطلوب ۴–۵؛ نه eNPS)</h3><div id="cov" class="scroll"></div><p class="note" data-i18n="n_cov"></p></div>
+  </section>
+
+  <section class="tab" id="tab-recruitment">
+    <div id="rkpis" class="kpis"></div>
+    <div class="grid2">
+      <div class="card"><h3 data-i18n="c_km">احتمال ماندن تازه‌واردها (Kaplan–Meier)</h3><div class="cv"><canvas id="ch-km"></canvas></div><p class="note" data-i18n="n_km"></p></div>
+      <div class="card"><h3 data-i18n="c_hm">استخدام ماهانه و تعداد خروج‌کرده‌ها از همان گروه</h3><div class="cv"><canvas id="ch-hm"></canvas></div></div>
+    </div>
+    <div class="card"><h3 data-i18n="c_rdept">به تفکیک بخش</h3><div id="rdept" class="scroll"></div></div>
+  </section>
+
+  <section class="tab" id="tab-careers">
+    <div id="ckpis" class="kpis"></div>
+    <div class="grid2">
+      <div class="card"><h3 data-i18n="c_msp">نرخ خروج ماهانه بر اساس ماه‌های گذشته از آخرین ارتقا</h3><div class="cv"><canvas id="ch-msp"></canvas></div></div>
+      <div class="card"><h3 data-i18n="c_cdept">آماده ارتقا و Top Performer به تفکیک بخش</h3><div class="cv"><canvas id="ch-cdept"></canvas></div></div>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-dq">
+    <div class="card"><h3 data-i18n="c_dq">ثبت مسائل کیفیت داده و تصمیم‌ها</h3><div id="dq" class="scroll"></div></div>
+  </section>
+</main>
+
+<footer><span data-i18n="req">آخرین درخواست‌های API:</span> <code id="reqlog"></code></footer>
+<script src="/static/vendor/chart.umd.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
